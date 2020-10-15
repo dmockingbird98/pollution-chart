@@ -1,0 +1,46 @@
+.App{
+    height:100vh;
+    width:100vw;
+    overflow:hidden;
+
+    .filterOptions{
+        box-sizing: border-box;
+        height:50vh;
+        padding:20px 30px;
+        .country{
+            .dropdown-menu{
+                max-height:500px;
+                overflow-x:hidden;
+                overflow-y:scroll;
+            }
+            // th,td{
+            //     padding:10px 20px;
+            //     border:1px solid #000;
+            // }
+            // td{
+            //     &:hover{
+            //         cursor: pointer;
+            //     }
+            // }
+            // th{
+            //     background-color: rgb(231, 231, 231);
+            // }
+        }
+        .city{
+            .dropdown-menu{
+                max-height:500px;
+                max-width:400px;
+                overflow-x:hidden;
+                overflow-y:scroll;
+            }
+        }
+        .dates{
+            display:flex;
+            flex-direction: column;
+        }
+    }
+    .graph{
+        box-sizing: border-box;
+        max-height:50vh;
+    }
+}

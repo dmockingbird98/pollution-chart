@@ -12,7 +12,7 @@ class ApexChart extends React.Component {
         series: this.props.arr,
         options: {
           chart: {
-            height: 350,
+            height: 500,
             type: 'line',
             dropShadow: {
               enabled: true,
@@ -26,7 +26,7 @@ class ApexChart extends React.Component {
               show: false
             }
           },
-          colors: ['#77B6EA', '#545454'],
+          colors: ['#00ccff','#80ff00','#000','#ff3300','#804000','#ffff00'],
           dataLabels: {
             enabled: true,
           },
@@ -34,7 +34,7 @@ class ApexChart extends React.Component {
             curve: 'smooth'
           },
           title: {
-            text: 'Average High & Low Temperature',
+            text: 'Concentrations of various pollutants in Atmosphere',
             align: 'left'
           },
           grid: {
@@ -48,18 +48,35 @@ class ApexChart extends React.Component {
             size: 1
           },
           xaxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+            categories: this.props.dateArr,
             title: {
-              text: 'Month'
-            }
-          },
-          yaxis: {
-            title: {
-              text: 'Temperature'
+              text: 'Time Period'
             },
-            min: 5,
-            max: 2000
+            labels: {
+              datetimeUTC: false,
+              datetimeFormatter: {
+                  year: 'yyyy',
+                  month: "MMM 'yy",
+                  day: 'd MMM',
+                  hour: 'HH:mm',
+            }
+          }
           },
+          yaxis: [{
+            title: {
+              text: 'Conc of Pollutants(µg/m3)'
+            },
+            min: 0,
+            max: 200
+          },
+          {
+            opposite:true,
+            title: {
+              text: 'Conc of C-O(µg/m3)'
+            },
+            min: 0,
+            max: 4000
+          }],
           legend: {
             position: 'top',
             horizontalAlign: 'right',
@@ -76,7 +93,6 @@ class ApexChart extends React.Component {
   
 
     render() {
-        console.log(this.props.arr)
       return (
         
 

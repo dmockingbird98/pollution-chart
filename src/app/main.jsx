@@ -1,51 +1,52 @@
-import React, { useEffect, useState } from 'react';
-import pollution from './common/duck/measurements';
+import React, { useState, useEffect } from 'react';
+import Dates from './dates';
 import Graph from './pollutionGraph';
+import SelectCity from './selectCity';
+import SelectCountry from './selectCountry';
+import * as moment from 'moment';
 
 export default function Main(){
 
-    const [country,setCountry]=useState("Select Country...");
-    const [countries,setCountries] = useState(null);
     const [code,setCode] = useState(null);
-    const [city,setCity] = useState(null);
-    const [cities,setCities] = useState(null);
-    
+    const [to,setTo] = useState(null);
+    const [from, setFrom] = useState(null);
+    const [city,setCity] = useState("Kochi");
+
     useEffect(() => {
-        pollution.countries().then(data => setCountries(data.results));
-        pollution.cities(code).then(data => setCities(data.results));
-      },([code]));
-    
-    function handleClick(country,code){
-        setCountry(country);
-        setCode(code);        
+        const date = new Date();
+        const now = moment(date).format("YYYY-MM-DD");
+        setTo(now);
+      },([]));
+
+    function handleCode(code){
+        setCode(code)
     }
+    function handleCity(city){
+        setCity(city)
+    }
+    function toHandler(date){
+        setTo(date)
+    }
+
+    function fromHandler(date){
+        setFrom(date)
+    }
+    
     return <>
-                <div className="filterOptions d-flex justify-content-between">
-                    <div className="country">
-                        <div className="dropdown">
-                            <button className="dropdown-toggle" type="button" data-toggle="dropdown"> {country}</button>
-                            <div className="dropdown-menu">
-                                {countries && countries.map(({name, code},index) => name && <p key={index} className="dropdown-item" onClick={()=>handleClick(name,code)}>{name}</p>)}
-                            </div>
-                        </div>
+            <div className="filterOptions row">
+                    <div className="col-4">
+                        <SelectCountry handleCode={handleCode} />
                     </div>
-                    <div className="city">
-                    <div className="dropdown">
-                            <button className="dropdown-toggle" type="button" data-toggle="dropdown"> {city || "Select City ..."} </button>
-                            <div className="dropdown-menu">
-                                {cities && cities.map(({name},index) => name && <p key={index} className="dropdown-item" onClick={()=>setCity(name)}>{name}</p>)}
-                            </div>
-                        </div>
+                    <div className="col-4">
+                        <SelectCity code={code} handleCity={handleCity}/>
                     </div>
-                    <div className="dates">
-                        <label>From Date: <input type="date"/></label>
-                        
-                        <label>To Date: <input type="date"/></label>
+                    <div className="col-4">
+                        <Dates to={to} toHandler={toHandler} fromHandler={fromHandler}/>
                     </div>
-                </div>
-                <div className="graph">
-                    {/* <h1>Country is {country? country.name:""}, City is {city?city.name:''}, dates From </h1> */}
-                    <Graph />
-                </div>
-            </>
+            </div>
+            <div className="graph">
+            {/* <h1>Country is {country? country.name:""}, City is {city?city.name:''}, dates From </h1> */}
+                <Graph to={to} from={from} city={city}/>
+            </div>
+    </>
 }

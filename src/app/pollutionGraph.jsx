@@ -29,7 +29,7 @@ function maxandmin(data){
             return max = value > max ? value : max;
         }
     })
-    return {max,comax}
+    return { max: Math.ceil(max),comax: Math.ceil(comax)}
 }
 
 function handleDate(data) {

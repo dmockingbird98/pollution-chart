@@ -51,14 +51,15 @@ class ApexChart extends React.Component {
             type: 'datetime',
             categories: this.props.dateArr,
             title: {
-              text: 'Time Period'
+              text: 'Time Period',
+              offsetY: 10,
             },
             labels: {
               datetimeUTC: false,
               formatter:props.calDate,
               datetimeFormatter: {
                   year: 'yyyy',
-                  month: "MMM 'yy",
+                  month: "MMM 'yyyy",
                   day: 'd MMM',
                   hour: 'HH:mm',
             }

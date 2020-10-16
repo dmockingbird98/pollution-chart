@@ -1,13 +1,12 @@
 import React,{useEffect, useState} from 'react'
 import ApexChart from './common/graph';
 import pollution from './common/services/measurements';
-import * as moment from 'moment';
 
 function pollutionValues(data){
 
     let ob={};
     let finalArray=[];
-    data.map(({value,parameter,date})=>{ 
+    data.map(({value,parameter})=>{ 
         if (ob[parameter]){
         return ob[parameter].push(value);
         } else {
@@ -20,26 +19,40 @@ function pollutionValues(data){
     return finalArray
 }
 
+function maxandmin(data){
+    let comax = 0;
+    let max = 0;
+    data.map(({value,parameter}) => {
+        if(parameter === "co"){
+            return comax = value > comax ? value : comax;
+        }else{
+            return max = value > max ? value : max;
+        }
+    })
+    return {max,comax}
+}
+
 function handleDate(data) {
         let timeArray = [];
-        data!==null && data.map(({date})=> timeArray.includes(moment(date).format("YYYY-MM-DD")) ? '':timeArray.push(moment(date).format("YYYY-MM-DD")));
-        console.log(timeArray)
+        data!==null && data.map(({date})=> timeArray.push(date.utc));
         return timeArray
 }
 
 export default function Graph({city,to,from}){
     const [arr,setArr] = useState(null);
     const [dateArr,setDate] = useState(null);
-
+    const [max,setmax] = useState({});
     useEffect(() => {
         setArr(null)
         pollution.measurements(city,to,from).then(data =>  
-            {   setDate(handleDate(data.results))
-                setArr(pollutionValues(data.results))
+            {   
+                setmax(maxandmin(data.results));
+                setDate(handleDate(data.results));
+                setArr(pollutionValues(data.results));
             });
     },([city,to,from]));  
 
     return <div>
-        {/* {arr === null ? <h1>Loading</h1> : arr.length > 0 ? <ApexChart arr={arr} dateArr={dateArr}/>: <h1>No Data Available</h1>} */}
+        {arr === null ? <h1>Loading</h1> : arr.length > 0 ? <ApexChart max = {max} arr={arr} dateArr={dateArr}/>: <h1>No Data Available</h1>}
     </div>
 }

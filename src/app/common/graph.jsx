@@ -48,12 +48,14 @@ class ApexChart extends React.Component {
             size: 1
           },
           xaxis: {
+            type: 'datetime',
             categories: this.props.dateArr,
             title: {
               text: 'Time Period'
             },
             labels: {
               datetimeUTC: false,
+              formatter:props.calDate,
               datetimeFormatter: {
                   year: 'yyyy',
                   month: "MMM 'yy",
@@ -67,7 +69,7 @@ class ApexChart extends React.Component {
               text: 'Conc of Pollutants(µg/m3)'
             },
             min: 0,
-            max: 200
+            max: props.max.max || 100,
           },
           {
             opposite:true,
@@ -75,7 +77,7 @@ class ApexChart extends React.Component {
               text: 'Conc of C-O(µg/m3)'
             },
             min: 0,
-            max: 4000
+            max: props.max.comax + 10 || 100,
           }],
           legend: {
             position: 'top',
